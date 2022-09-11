@@ -1,20 +1,25 @@
 import React from "react";
-import logo from "./logo.png";
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Sightings from "./routes/Sightings";
+import Home from "./routes/Home";
+import NotFound from "./routes/NotFound";
+import SharedLayout from "./routes/SharedLayout";
+import Sighting from "./components/Sighting";
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path="sightings" element={<Sightings />}>
+            <Route path=":sightingIndex" element={<Sighting />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </>
+  );
+};
 
 export default App;
