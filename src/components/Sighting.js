@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../constants";
+import { dateFormat } from "../utils";
 
 const Sighting = () => {
   const [sighting, setSighting] = useState({});
-  const [sightingIndex, setSightingIndex] = useState("0");
+  const [sightingIndex, setSightingIndex] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getResponse = async () => {
@@ -23,12 +25,21 @@ const Sighting = () => {
   let sightingInfo = [];
   if (sighting) {
     for (const key in sighting) {
-      sightingInfo.push(
-        <tr>
-          <td>{key}</td>
-          <td>{sighting[key]}</td>
-        </tr>
-      );
+      if (key === "location" || key === "notes") {
+        sightingInfo.push(
+          <tr key={key}>
+            <td>{key}</td>
+            <td>{sighting[key]}</td>
+          </tr>
+        );
+      } else if (key === "date") {
+        sightingInfo.push(
+          <tr key={key}>
+            <td>{key}</td>
+            <td>{dateFormat(sighting[key])}</td>
+          </tr>
+        );
+      }
     }
   }
 
@@ -38,10 +49,15 @@ const Sighting = () => {
     setSightingIndex(params.sightingIndex);
   }
 
+  const handleEdit = (e) => {
+    navigate(`/sightings/${sightingIndex}/edit`);
+  };
+
   return (
     <>
       <h2> Sighting {sightingIndex} </h2>
-      <table class="table">
+      <button onClick={handleEdit}>Edit Sighting</button>
+      <table className="table">
         <tbody>{sightingInfo}</tbody>
       </table>
       <Link to="/sightings">Back to sightings page</Link>

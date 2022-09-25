@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
+import { dateFormat } from "../utils";
 
 const Sightings = () => {
-  const navigate = useNavigate();
   const [sighting, setSighting] = useState({});
 
   useEffect(() => {
@@ -16,28 +16,36 @@ const Sightings = () => {
   }, [sighting]);
 
   const sightingList = [];
+
   if (sighting) {
-    for (const key in sighting) {
+    for (const item in sighting) {
       sightingList.push(
-        <option value={key} key={key}>
-          Sighting {key}
-        </option>
+        <tr key={item}>
+          <td>{sighting[item].id}</td>
+          <td>{dateFormat(sighting[item].date)}</td>
+          <td>{sighting[item].location}</td>
+          <td>
+            <Link to={`/sightings/${sighting[item].id}`}>Details</Link>
+          </td>
+        </tr>
       );
     }
   }
 
-  const handleChange = (e) => {
-    navigate(`/sightings/${Number(e.target.value)}`);
-  };
-
   return (
     <div>
       <h1>Sightings</h1>
-      <select onChange={handleChange}>
-        <option selected>Select Sighting</option>
-        {sightingList}
-      </select>
-
+      <table>
+        <thead>
+          <tr>
+            <th>Sighting #</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>{sightingList}</tbody>
+      </table>
       <Outlet />
     </div>
   );
