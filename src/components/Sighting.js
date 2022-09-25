@@ -25,7 +25,12 @@ const Sighting = () => {
   let sightingInfo = [];
   if (sighting) {
     for (const key in sighting) {
-      if (key === "location" || key === "notes") {
+      if (
+        key === "location_description" ||
+        key === "notes" ||
+        key === "city" ||
+        key === "country"
+      ) {
         sightingInfo.push(
           <tr key={key}>
             <td>{key}</td>

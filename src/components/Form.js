@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 
 const Form = () => {
   const [date, setDate] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
   const navigate = useNavigate();
@@ -11,6 +13,14 @@ const Form = () => {
   const handleChange = (e) => {
     if (e.target.name === "date") {
       setDate(e.target.value);
+    }
+
+    if (e.target.name === "city") {
+      setCity(e.target.value);
+    }
+
+    if (e.target.name === "country") {
+      setCountry(e.target.value);
     }
 
     if (e.target.name === "location") {
@@ -29,7 +39,9 @@ const Form = () => {
     const sendRequest = async () => {
       const response = await axios.post("http://localhost:3000/sightings", {
         date,
-        location,
+        city,
+        country,
+        location_description: location,
         notes,
       });
 
@@ -55,6 +67,19 @@ const Form = () => {
         <label>
           Date:
           <input type="date" name="date" onChange={handleChange} value={date} />
+        </label>
+        <label>
+          City:
+          <input type="text" name="city" onChange={handleChange} value={city} />
+        </label>
+        <label>
+          Country:
+          <input
+            type="text"
+            name="country"
+            onChange={handleChange}
+            value={country}
+          />
         </label>
         <label>
           Location:

@@ -5,12 +5,13 @@ import { useParams } from "react-router-dom";
 import { BACKEND_URL } from "../constants";
 import { dateFormat } from "../utils";
 
-const Form = () => {
+const EditForm = () => {
   const [date, setDate] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
   const [sightingIndex, setSightingIndex] = useState("");
-  // const [sighting, setSighting] = useState({});
 
   const navigate = useNavigate();
 
@@ -22,8 +23,9 @@ const Form = () => {
         );
 
         setDate(dateFormat(response.data.date));
-
-        setLocation(response.data.location);
+        setCity(response.data.city);
+        setCountry(response.data.country);
+        setLocation(response.data.location_description);
         setNotes(response.data.notes);
       }
     };
@@ -33,6 +35,14 @@ const Form = () => {
   const handleChange = (e) => {
     if (e.target.name === "date") {
       setDate(e.target.value);
+    }
+
+    if (e.target.name === "city") {
+      setCity(e.target.value);
+    }
+
+    if (e.target.name === "country") {
+      setCountry(e.target.value);
     }
 
     if (e.target.name === "location") {
@@ -58,7 +68,9 @@ const Form = () => {
         `http://localhost:3000/sightings/${sightingIndex}`,
         {
           date,
-          location,
+          city,
+          country,
+          location_description: location,
           notes,
         }
       );
@@ -79,6 +91,19 @@ const Form = () => {
         <label>
           Date:
           <input type="date" name="date" onChange={handleChange} value={date} />
+        </label>
+        <label>
+          City:
+          <input type="text" name="city" onChange={handleChange} value={city} />
+        </label>
+        <label>
+          Country:
+          <input
+            type="text"
+            name="country"
+            onChange={handleChange}
+            value={country}
+          />
         </label>
         <label>
           Location:
@@ -104,4 +129,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default EditForm;

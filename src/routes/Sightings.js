@@ -23,7 +23,7 @@ const Sightings = () => {
         <tr key={item}>
           <td>{sighting[item].id}</td>
           <td>{dateFormat(sighting[item].date)}</td>
-          <td>{sighting[item].location}</td>
+          <td>{sighting[item].location_description}</td>
           <td>
             <Link to={`/sightings/${sighting[item].id}`}>Details</Link>
           </td>
